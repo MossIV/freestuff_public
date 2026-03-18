@@ -206,6 +206,25 @@ CREATE TABLE `category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `listing_category`
+-- Junction table for many-to-many relationship between listings and categories
+--
+
+DROP TABLE IF EXISTS `listing_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `listing_category` (
+  `listing_id` int unsigned NOT NULL,
+  `category_id` int NOT NULL,
+  PRIMARY KEY (`listing_id`,`category_id`),
+  KEY `fk_listing_category_category` (`category_id`),
+  CONSTRAINT `fk_listing_category_listing` FOREIGN KEY (`listing_id`) REFERENCES `listing` (`listing_id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_listing_category_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Insert sample category data
 --
 
