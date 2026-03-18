@@ -50,7 +50,7 @@
                                        id="district_search" 
                                        placeholder="Type to search districts..."
                                        autocomplete="off"
-                                       value="<?= (!empty($listing->district_id) ? District::display($listing->district_id) : '') ?>"/>
+                                       value="<?= (IS_UPDATE_MODE && !empty($listing->district_id) ? District::display($listing->district_id) : '') ?>"/>
                                 <input type="hidden" name="district_id" id="district_id_field" value="<?= ($listing->district_id) ?>"/>
                             </div>
                         </div>

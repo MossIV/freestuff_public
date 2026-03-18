@@ -10,9 +10,12 @@ class ListController extends _Controller {
 
         $listing = new Listing();
         $listing->createTempListingId();
+        
+        // Store session district for later use but don't pre-fill form for new listings
+        $session_district_id = 0;
         if (isset($_SESSION["session_district"]) && is_object($_SESSION["session_district"])) {
             writeLog($_SESSION["session_district"]);
-            $listing->district_id = $_SESSION["session_district"]->district_id;
+            $session_district_id = $_SESSION["session_district"]->district_id;
         }
 
 
