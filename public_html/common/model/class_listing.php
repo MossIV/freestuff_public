@@ -25,6 +25,7 @@ class Listing extends CRModel {
     public $listing_status;
     public $image_data;
     public $pickup;
+    public $category_ids;
 
     public static $available_listing_types = array('free', 'wanted');
 
@@ -40,6 +41,15 @@ class Listing extends CRModel {
     public function buildFromPost() {
         foreach ($_POST as $k => $v) {
             $this->$k = $v;
+        }
+        
+        // Handle category_ids from POST (can be array or comma-separated string)
+        if (isset($_POST['category_ids'])) {
+            if (is_array($_POST['category_ids'])) {
+                $this->category_ids = $_POST['category_ids'];
+            } else {
+                $this->category_ids = explode(',', $_POST['category_ids']);
+            }
         }
     }
 
@@ -175,6 +185,10 @@ class Listing extends CRModel {
             $sql .= ", listing_date = NOW() ";
             if (runQuery($sql)) {
                 $this->listing_id = lastInsertedId();
+                
+                // Save category associations
+                $this->saveCategories();
+                
                 return true;
             } else {
                 return false;
@@ -195,7 +209,14 @@ class Listing extends CRModel {
             $sql .= " ,listing_type = " . quoteSQL($this->listing_type);
             $sql .= " ,district_id = " . quoteSQL($this->district_id);
             $sql .= " WHERE listing_id = " . quoteSQL($this->listing_id);
-            return runQuery($sql);
+            $result = runQuery($sql);
+            
+            // Update category associations
+            if ($result) {
+                $this->saveCategories();
+            }
+            
+            return $result;
         }
     }
 
@@ -495,6 +516,26 @@ return $out;
             $this->listing_status = $status;
             return true;
         }
+    }
+
+    /**
+     * Save category associations for this listing
+     */
+    public function saveCategories() {
+        if (!empty($this->listing_id) && isset($this->category_ids)) {
+            Category::saveCategoriesForListing($this->listing_id, $this->category_ids);
+        }
+    }
+
+    /**
+     * Get category IDs for this listing
+     * @return array Array of category IDs
+     */
+    public function getCategoryIds() {
+        if (!empty($this->listing_id)) {
+            return Category::getCategoriesForListing($this->listing_id);
+        }
+        return array();
     }
 
 }
