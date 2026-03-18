@@ -26,6 +26,8 @@ class ListController extends _Controller {
 
         PageHelper::setViews("views/list/list_form.php");
 
+        // Make categories available for the form
+        $categories = Category::getCategoriesForDropdown();
 
         $temp_img = new FileHelper('listing_images', $listing->listing_id);
         $image = $temp_img->getImagePathFromTag("most_recent_upload", 240, 240, "thumbnail", false);
@@ -175,6 +177,10 @@ class ListController extends _Controller {
         BreadcrumbHelper::addBreadcrumbs('Current listings');
         BreadcrumbHelper::addBreadcrumbs($listing->title, seoFriendlyURLs($listing->listing_id, 'listing', NULL, $listing->title));
         BreadcrumbHelper::addBreadcrumbs('Edit');
+
+        // Make categories available for the form
+        $categories = Category::getCategoriesForDropdown();
+        $listing_category_ids = $listing->getCategoryIds();
 
         $temp_img = new FileHelper('listing_images', $listing->listing_id);
         $image = $temp_img->getImagePathFromTag("most_recent_upload", 240, 240, "thumbnail", false);

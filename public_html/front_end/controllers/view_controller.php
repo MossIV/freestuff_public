@@ -47,6 +47,10 @@ class ViewController extends _Controller {
         TemplateHandler::setBrowseCategoryName(District::resolveRegionName($listing->district_id));
         PageHelper::setViews('views/view/banner.php', "views/view/item_description.php");
 
+        // Get categories for this listing
+        $listing_category_ids = $listing->getCategoryIds();
+        $categories = Category::getCategoriesForDropdown();
+
         if ($listing->isMyListing()) {
             PageHelper::setViews("views/view/list_requesters.php");
             PageHelper::addPageJavascriptAfterPageLoaded('views/message/list_conversations.js');
