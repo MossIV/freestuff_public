@@ -19,6 +19,31 @@
                               class="fa fa-map-marker"></span> <?= District::display2($listing->district_id) ?>
                     </div>
 
+                    <?php
+                    // Display categories if available
+                    if (!empty($listing_category_ids) && !empty($categories)) {
+                        $selected_categories = array();
+                        foreach ($listing_category_ids as $cat_id) {
+                            if (isset($categories[$cat_id])) {
+                                $selected_categories[] = $categories[$cat_id];
+                            }
+                        }
+                        if (!empty($selected_categories)) {
+                            ?>
+                            <div class="listing-categories mt-2">
+                                <?php
+                                foreach ($selected_categories as $cat_name) {
+                                    ?>
+                                    <span class="listing-category-tag"><?= htmlspecialchars($cat_name) ?></span>
+                                    <?php
+                                }
+                                ?>
+                            </div>
+                            <?php
+                        }
+                    }
+                    ?>
+
                     <div class="d-block d-md-flex ml-auto">
                         <div>
                             <?
