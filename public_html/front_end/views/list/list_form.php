@@ -4,6 +4,9 @@
 
     $page_heading = IS_UPDATE_MODE ? 'Edit my listing' : 'Create a listing';
     TemplateHandler::echoPageTitle($page_heading);
+
+    // Prepare districts data for JavaScript
+    $districts_json = json_encode($districts);
     ?>
     <form method="post" action="list/save" id='list_form' class="row">
         <? /* [ML] populated by croppie*/ ?>
@@ -41,15 +44,15 @@
                         </div>
                         <div class="form-group">
                             <label for="district_id_field">Closest District for pickup</label>
-                            <select class="form-control" name="district_id" id="district_id_field">
-                                <option value="0">Please Select</option>
-                                <? foreach (District::getAllNested() as $region_name => $districts) {
-                                    foreach ($districts as $district_id => $district_name) {
-                                        echo FormHelper::option(District::display($district_id), $district_id, $listing->district_id);
-                                    }
-
-                                } ?>
-                            </select>
+                            <div class="twitter-typeahead">
+                                <input type="text" 
+                                       class="form-control typeahead-district" 
+                                       id="district_search" 
+                                       placeholder="Type to search districts..."
+                                       autocomplete="off"
+                                       value="<?= (!empty($listing->district_id) ? District::display($listing->district_id) : '') ?>"/>
+                                <input type="hidden" name="district_id" id="district_id_field" value="<?= ($listing->district_id) ?>"/>
+                            </div>
                         </div>
 
                         <?php
@@ -149,4 +152,8 @@
             ?>
         </div>
     </form>
+
+    <script type="text/javascript">
+        var districtsData = <?= $districts_json ?>;
+    </script>
 </div>
