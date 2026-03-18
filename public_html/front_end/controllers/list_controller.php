@@ -21,6 +21,10 @@ class ListController extends _Controller {
         PageHelper::addPageJavascriptOnInitial('js/croppie2.6.2/croppie.min.js');
         PageHelper::addPageJavascriptOnInitial('js/croppie2.6.2/exif.js');
 
+        // Include typeahead library for district search
+        PageHelper::addPageJavascriptOnInitial('common/plugins_js/typeahead-1.2.0/typeahead-1.2.0.bundle.js');
+        PageHelper::addPageStylesheetFile('common/plugins_js/typeahead-1.2.0/typeahead.bundle.css');
+
 
         BreadcrumbHelper::addBreadcrumbs('List An Item');
 
@@ -28,6 +32,9 @@ class ListController extends _Controller {
 
         // Make categories available for the form
         $categories = Category::getCategoriesForDropdown();
+
+        // Make districts available for typeahead
+        $districts = District::getAllForTypeahead();
 
         $temp_img = new FileHelper('listing_images', $listing->listing_id);
         $image = $temp_img->getImagePathFromTag("most_recent_upload", 240, 240, "thumbnail", false);
@@ -169,6 +176,10 @@ class ListController extends _Controller {
         PageHelper::addPageJavascriptOnInitial('js/croppie2.6.2/croppie.min.js');
         PageHelper::addPageJavascriptOnInitial('js/croppie2.6.2/exif.js');
 
+        // Include typeahead library for district search
+        PageHelper::addPageJavascriptOnInitial('common/plugins_js/typeahead-1.2.0/typeahead-1.2.0.bundle.js');
+        PageHelper::addPageStylesheetFile('common/plugins_js/typeahead-1.2.0/typeahead.bundle.css');
+
 
         TemplateHandler::setSelectedMainTab('my_account');
         PageHelper::setViews("views/list/list_form.php");
@@ -181,6 +192,9 @@ class ListController extends _Controller {
         // Make categories available for the form
         $categories = Category::getCategoriesForDropdown();
         $listing_category_ids = $listing->getCategoryIds();
+
+        // Make districts available for typeahead
+        $districts = District::getAllForTypeahead();
 
         $temp_img = new FileHelper('listing_images', $listing->listing_id);
         $image = $temp_img->getImagePathFromTag("most_recent_upload", 240, 240, "thumbnail", false);
