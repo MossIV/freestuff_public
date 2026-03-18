@@ -167,5 +167,20 @@ class District extends CRModel {
         }
         return $_SESSION['district_cache'];
     }
+
+    /**
+     * Get all districts as a flat array for typeahead/autocomplete
+     * Returns array with district_id as key and "Region - District" as value
+     */
+    public static function getAllForTypeahead() {
+        $nested = self::getAllNested();
+        $districts = array();
+        foreach ($nested as $region_name => $region_districts) {
+            foreach ($region_districts as $district_id => $district_name) {
+                $districts[$district_id] = $region_name . ' - ' . $district_name;
+            }
+        }
+        return $districts;
+    }
 }
 
