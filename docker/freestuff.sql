@@ -190,6 +190,38 @@ CREATE TABLE `listing` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `category`
+-- Categories for listing items (e.g., Furniture, Electronics, Clothing)
+--
+
+DROP TABLE IF EXISTS `category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category` (
+  `category_id` int NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(100) NOT NULL,
+  `category_slug` varchar(100) NOT NULL,
+  `sort_order` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- Insert sample category data
+--
+
+INSERT INTO `category` (`category_id`, `category_name`, `category_slug`, `sort_order`) VALUES
+(1, 'Furniture', 'furniture', 1),
+(2, 'Electronics', 'electronics', 2),
+(3, 'Clothing', 'clothing', 3),
+(4, 'Books', 'books', 4),
+(5, 'Kitchen', 'kitchen', 5),
+(6, 'Garden', 'garden', 6),
+(7, 'Sports', 'sports', 7),
+(8, 'Baby/Kids', 'baby-kids', 8),
+(9, 'Tools', 'tools', 9),
+(10, 'Other', 'other', 10);
+
+--
 -- Table structure for table `listing_profile_mark`
 --
 
