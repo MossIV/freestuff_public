@@ -50,8 +50,38 @@
 
                                 } ?>
                             </select>
-
                         </div>
+
+                        <?php
+                        // Category Tags Section
+                        if (!empty($categories)) {
+                            ?>
+                            <div class="form-group">
+                                <label for="category_ids">Category Tags</label>
+                                <div class="category-tags-container">
+                                    <?php
+                                    foreach ($categories as $category_id => $category_name) {
+                                        $is_checked = !empty($listing_category_ids) && in_array($category_id, $listing_category_ids);
+                                        ?>
+                                        <div class="form-check form-check-inline category-tag-checkbox">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   name="category_ids[]" 
+                                                   id="category_<?= $category_id ?>" 
+                                                   value="<?= $category_id ?>"
+                                                   <?= ($is_checked ? 'checked' : '') ?> />
+                                            <label class="form-check-label" for="category_<?= $category_id ?>">
+                                                <?= htmlspecialchars($category_name) ?>
+                                            </label>
+                                        </div>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                                <small class="form-text text-muted">Select one or more categories for your listing</small>
+                            </div>
+                            <?php
+                        }
+                        ?>
 
                     </div>
 
