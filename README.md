@@ -58,7 +58,7 @@ password: password
 
 # Suggestions to implement
 
-1. Category Tags for when creating a new listing. 
+1. ~~Category Tags for when creating a new listing. ~~
 2. Tabs for categories in the nav.
 3. Change dropdown list to a typing bar dropdown that narrows based on typed text.
 4. move the upload picture button into the box.
