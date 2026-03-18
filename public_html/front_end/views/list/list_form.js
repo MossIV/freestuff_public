@@ -1,4 +1,61 @@
 $(function () {
+    // District typeahead functionality
+    var districtsArray = [];
+    
+    // Convert districtsData object to array for typeahead
+    if (typeof districtsData !== 'undefined') {
+        for (var id in districtsData) {
+            districtsArray.push({
+                id: id,
+                name: districtsData[id]
+            });
+        }
+    }
+    
+    // Initialize typeahead for district search
+    if ($('.typeahead-district').length && districtsArray.length > 0) {
+        var districtSearch = $('.typeahead-district').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            name: 'districts',
+            display: 'name',
+            source: function(query, syncResults, asyncResults) {
+                var results = districtsArray.filter(function(district) {
+                    return district.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+                });
+                syncResults(results);
+            },
+            templates: {
+                suggestion: function(data) {
+                    return '<div>' + data.name + '</div>';
+                }
+            }
+        });
+        
+        // Handle selection
+        districtSearch.on('typeahead:select', function(ev, suggestion) {
+            $('#district_id_field').val(suggestion.id);
+        });
+        
+        // Handle clear/change - reset hidden field if empty
+        districtSearch.on('typeahead:change', function(ev) {
+            var currentValue = $(this).val();
+            var found = false;
+            for (var i = 0; i < districtsArray.length; i++) {
+                if (districtsArray[i].name === currentValue) {
+                    $('#district_id_field').val(districtsArray[i].id);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found && currentValue === '') {
+                $('#district_id_field').val('');
+            }
+        });
+    }
+
     var cropper = $('#picture').croppie({
         url: $php.image,
         enableExif: false,
