@@ -199,4 +199,47 @@ class Category extends CRModel {
         }
         return '';
     }
+
+    /**
+     * Get category by slug
+     * @param string $category_slug
+     * @return Category|false
+     */
+    public static function getBySlug($category_slug) {
+        $sql = "SELECT category_id, category_name, category_slug, sort_order
+                FROM category 
+                WHERE category_slug = " . quoteSQL($category_slug);
+        $row = runQueryGetFirstRow($sql);
+        
+        if ($row) {
+            return new Category(
+                $row['category_id'],
+                $row['category_name'],
+                $row['category_slug'],
+                $row['sort_order']
+            );
+        }
+        return false;
+    }
+
+    /**
+     * Get all categories with their listing counts
+     * @return array Array of categories with count
+     */
+    public static function getCategoriesWithCount() {
+        $sql = "SELECT c.category_id, c.category_name, c.category_slug, c.sort_order, 
+                       COUNT(lc.listing_id) as listing_count
+                FROM category c
+                LEFT JOIN listing_category lc ON c.category_id = lc.category_id
+                LEFT JOIN listing l ON lc.listing_id = l.listing_id AND l.listing_status IN ('available','reserved')
+                GROUP BY c.category_id, c.category_name, c.category_slug, c.sort_order
+                ORDER BY c.sort_order ASC, c.category_name ASC";
+        $result = runQuery($sql);
+        
+        $categories = array();
+        while ($row = fetchSQL($result)) {
+            $categories[$row['category_slug']] = (int)$row['listing_count'];
+        }
+        return $categories;
+    }
 }
