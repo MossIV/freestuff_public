@@ -959,3 +959,89 @@ inbox page
     text-decoration: none;
     color: #fff;
 }
+
+/*
+ * MODERN UPLOAD BOX STYLES
+ * Suggestion #4 & #5: Move upload button inside box and restyle
+ */
+.upload-box {
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    padding: 2rem 1rem;
+    text-align: center;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-box:hover {
+    border-color: var(--fs-primary);
+    background-color: rgba(34, 96, 172, 0.05);
+}
+
+.upload-box.dragover {
+    border-color: var(--fs-primary);
+    background-color: rgba(34, 96, 172, 0.1);
+    box-shadow: 0 0 0 4px rgba(34, 96, 172, 0.1);
+}
+
+.upload-box-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: #888;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+.upload-box:hover .upload-icon {
+    color: var(--fs-primary);
+}
+
+.upload-text {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.upload-hint {
+    font-size: 0.85rem;
+    color: #999;
+    margin-bottom: 1rem;
+}
+
+.upload-btn {
+    margin-top: 0.5rem;
+}
+
+/* Hide upload box when image is loaded */
+.upload-box.has-image {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .upload-box {
+        padding: 1.5rem 1rem;
+        min-height: 180px;
+    }
+    
+    .upload-icon {
+        font-size: 2.5rem;
+    }
+    
+    .upload-text {
+        font-size: 1rem;
+    }
+}

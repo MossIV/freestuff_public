@@ -5,6 +5,9 @@
     $page_heading = IS_UPDATE_MODE ? 'Edit my listing' : 'Create a listing';
     TemplateHandler::echoPageTitle($page_heading);
 
+    // Default button style for rotate button
+    $btn_style = 'btn-secondary';
+
     // Prepare districts data for JavaScript
     $districts_json = json_encode($districts);
     ?>
@@ -90,20 +93,23 @@
 
                     <div class="col-12 col-md-6">
                         <div id='uploadedImage'>
-                            <div class="text-left text-md-center mb-3">
-                                <label class='btn secondary mr-1'>
-                                    Upload Picture
-                                    <input class="d-none" type="file" id="upload" value="Upload Picture"
-                                           name="pickfiles" accept="image/*"/>
-                                </label>
-                                <?
-                                $btn_style = IS_UPDATE_MODE ? '' : 'd-none';
-                                ?>
-                                <div id='rotate' class="btn <?= ($btn_style) ?>"><span class="fa fa-refresh"></span>
-                                    Rotate
+                            <!-- Upload Box -->
+                            <div class="upload-box mb-3" id="uploadBox">
+                                <div class="upload-box-content">
+                                    <i class="fa fa-camera-retro upload-icon"></i>
+                                    <p class="upload-text">Click to upload a picture</p>
+                                    <p class="upload-hint">or drag and drop</p>
+                                    <label class='btn primary upload-btn'>
+                                        Upload Picture
+                                        <input class="d-none" type="file" id="upload" value="Upload Picture"
+                                               name="pickfiles" accept="image/*"/>
+                                    </label>
                                 </div>
                             </div>
-                            <div id="picture"></div>
+                            <div id="rotate" class="btn <?= ($btn_style) ?> mb-2"><span class="fa fa-refresh"></span>
+                                Rotate
+                            </div>
+                            <div id="picture" style="display: none;"></div>
 
                         </div>
                     </div>
