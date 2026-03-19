@@ -73,12 +73,21 @@ $(function () {
 
     cropper.croppie('bind', {url: $php.image, zoom: 0});
 
+    // Hide upload box if image is already loaded (update mode)
+    if ($php.image && $php.image.length > 0) {
+        $('#uploadBox').hide();
+        $('#picture').show();
+    }
+
     function readFile(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
                 $('#picture').addClass('ready');
                 $('#rotate').removeClass('d-none');
+                // Hide upload box and show picture preview
+                $('#uploadBox').hide();
+                $('#picture').show();
                 cropper.croppie('bind', {
                     url: e.target.result,
                     zoom: 0
@@ -93,6 +102,52 @@ $(function () {
 
     $('#upload').on('change', function () {
         readFile(this);
+    });
+
+    // Drag and drop functionality for upload box
+    var uploadBox = $('#uploadBox');
+    var uploadInput = $('#upload')[0];
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function(eventName) {
+        uploadBox.on(eventName, function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    });
+
+    // Highlight drop area when dragging over it
+    ['dragenter', 'dragover'].forEach(function(eventName) {
+        uploadBox.on(eventName, function() {
+            uploadBox.addClass('dragover');
+        });
+    });
+
+    // Remove highlight when dragging leaves or drops
+    ['dragleave', 'drop'].forEach(function(eventName) {
+        uploadBox.on(eventName, function() {
+            uploadBox.removeClass('dragover');
+        });
+    });
+
+    // Handle dropped files
+    uploadBox.on('drop', function(e) {
+        var files = e.originalEvent.dataTransfer.files;
+        if (files.length > 0) {
+            uploadInput.files = files;
+            // Trigger change event
+            var event = new Event('change', { bubbles: true });
+            uploadInput.dispatchEvent(event);
+        }
+    });
+
+    // Click on upload box triggers file input (but not when clicking on the label/button)
+    uploadBox.on('click', function(e) {
+        // Don't trigger if clicking on the label or its children (the actual button)
+        if (e.target.closest('label')) {
+            return; // Let the label handle its native click behavior
+        }
+        uploadInput.click();
     });
 
     $('#rotate').on('click', function () {
