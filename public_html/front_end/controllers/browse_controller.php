@@ -56,6 +56,76 @@ class BrowseController extends _Controller  {
         $this->index($region);
     }
 
+    /**
+     * Browse listings by category
+     * @param string $category_slug The category slug
+     */
+    public function byCategory($category_slug) {
+        $category_slug = trim($category_slug);
+
+        if (!$category_slug) {
+            redirect("/");
+        }
+
+        // Find category by slug
+        $category = Category::getBySlug($category_slug);
+        if (!$category) {
+            redirect("/");
+        }
+
+        $listing_filter = new FilterHelper('listings');
+        $listing_filter->setDefault('listing_type','free');
+
+        $ip = paramFromHash('REMOTE_ADDR', $_SERVER);
+
+        // Join with listing_category table to filter by category
+        $sql = "SELECT l.*,u.firstname 
+                FROM listing l 
+                JOIN user u on l.user_id = u.user_id 
+                JOIN listing_category lc ON l.listing_id = lc.listing_id
+                WHERE l.listing_status IN ('available','reserved') 
+                AND lc.category_id = " . quoteSQL($category->category_id);
+        if ($listing_filter->listing_type != 'all') {
+            //    $sql .= " AND listing_type =" . quoteSQL($listing_filter->listing_type);
+        }
+
+        $listings = new DataWindowHelper("browse", $sql, "listing_date", "desc", 20);
+        $listings->run();
+        $paging = $listings->getPaging();
+
+        //profile mark category
+        $sql = "INSERT category_profile_mark SET 
+                category = " . quoteSQL($category->category_name) . ", 
+                user_id = " . quoteSQL(SESSION_USER_ID) . ", 
+                date = NOW(), 
+                ip_address = " . quoteSQL($ip);
+        runQuery($sql);
+
+        PageHelper::setMetaTitle('Browse ' . $category->category_name);
+        PageHelper::setMetaDescription('Browse ' . $category->category_name);
+        PageHelper::setRssLink(APP_URL . 'rss_feed?category=' . $category->category_name);
+
+        TemplateHandler::setBrowseCategoryName($category->category_name);
+        PageHelper::setViews('views/search/banner.php', "views/search/search_results.php");
+
+        BreadcrumbHelper::addBreadcrumbs("Browse Listings");
+        BreadcrumbHelper::addBreadcrumbs($category->category_name);
+
+        include("templates/main_layout.php");
+    }
+
+    /**
+     * Save category search notification
+     * @param string $category The category name
+     */
+    public function saveCategory($category) {
+        self::loginRequiredAndRedirect();
+
+        SavedSearch::getRegionNotifications($category);
+
+        redirect(APP_URL . 'search');
+    }
+
     public function save($region) {
         self::loginRequiredAndRedirect();
 
