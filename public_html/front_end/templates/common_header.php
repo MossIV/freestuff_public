@@ -1,5 +1,7 @@
 <?php
 $regions = Listing::getRegionsWithCount();
+$categories = Category::getCategoriesWithCount();
+$all_categories = Category::getAllCategories();
 $browsing_category = TemplateHandler::getBrowseCategoryName();
 ?>
 <header id="header" class="container d-none d-lg-block">
@@ -32,7 +34,7 @@ $browsing_category = TemplateHandler::getBrowseCategoryName();
                     <div class="col-md-7 col-lg-8">
                         <div class="dropdown d-inline-block mr-2 mb-2 mb-md-0 header-browse">
                             <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false" style="color: #333 !important">Browse Listings
+                                    aria-haspopup="true" aria-expanded="false" style="color: #333 !important">Browse by Region
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <?
@@ -45,6 +47,27 @@ $browsing_category = TemplateHandler::getBrowseCategoryName();
                                         <a class="dropdown-item d-flex justify-content-between align-items-center <?= ($row_style) ?>"
                                            href="browse/by-region/<?= ($region_name) ?>"><span
                                                     class=""><?= ($region_name) ?></span>&nbsp;<span
+                                                    class="badge badge-pill badge-fs"><?= ($count) ?></span></a>
+                                    </li>
+                                    <?
+                                } ?>
+                            </ul>
+                        </div>
+                        <div class="dropdown d-inline-block mr-2 mb-2 mb-md-0 header-browse">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" style="color: #333 !important">Browse by Category
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuCategoryLink">
+                                <?
+                                foreach ($all_categories as $category) {
+                                    $count = (int)paramFromHash($category->category_slug, $categories);
+
+                                    $row_style = ($browsing_category == $category->category_name) ? ' active-region' : '';
+                                    ?>
+                                    <li class="list-group-item">
+                                        <a class="dropdown-item d-flex justify-content-between align-items-center <?= ($row_style) ?>"
+                                           href="browse/by-category/<?= ($category->category_slug) ?>"><span
+                                                    class=""><?= ($category->category_name) ?></span>&nbsp;<span
                                                     class="badge badge-pill badge-fs"><?= ($count) ?></span></a>
                                     </li>
                                     <?
@@ -111,7 +134,7 @@ $browsing_category = TemplateHandler::getBrowseCategoryName();
         <div class="col-12 d-flex">
             <div class="flex-fill header-browse">
                 <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                     id="browseListingsMobile">Browse Listings
+                     id="browseListingsMobile">Browse by Region
                 </div>
                 <ul class="dropdown-menu" aria-labelledby="browseListingsMobile">
                     <?
@@ -123,6 +146,25 @@ $browsing_category = TemplateHandler::getBrowseCategoryName();
                         <li class="list-group-item">
                             <a class="dropdown-item d-flex justify-content-between align-items-center <?= ($row_style) ?>"
                                href="browse/by-region/<?= ($region_name) ?>"><span class=""><?= ($region_name) ?></span>&nbsp;<span
+                                        class="badge badge-pill badge-fs"><?= ($count) ?></span></a>
+                        </li>
+                    <? } ?>
+                </ul>
+            </div>
+            <div class="flex-fill header-browse">
+                <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                     id="browseCategoryMobile">Browse by Category
+                </div>
+                <ul class="dropdown-menu" aria-labelledby="browseCategoryMobile">
+                    <?
+                    foreach ($all_categories as $category) {
+                        $count = (int)paramFromHash($category->category_slug, $categories);
+
+                        $row_style = ($browsing_category == $category->category_name) ? ' active-region' : '';
+                        ?>
+                        <li class="list-group-item">
+                            <a class="dropdown-item d-flex justify-content-between align-items-center <?= ($row_style) ?>"
+                               href="browse/by-category/<?= ($category->category_slug) ?>"><span class=""><?= ($category->category_name) ?></span>&nbsp;<span
                                         class="badge badge-pill badge-fs"><?= ($count) ?></span></a>
                         </li>
                     <? } ?>
