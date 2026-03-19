@@ -20,7 +20,30 @@
                         <li class="list-group-item">
                             <a class="dropdown-item d-flex justify-content-between align-items-center <?= ($row_style) ?>"
                                href="browse/by-region/<?= ($region_name) ?>"><span class=""><?= ($region_name) ?></span>&nbsp;<span
-                                        class="badge badge-pill badge-fs"><?= ($count) ?></span></a>
+                                    class="badge badge-pill badge-fs"><?= ($count) ?></span></a>
+                        </li>
+                    <? } ?>
+                </ul>
+            </div>
+
+            <div class="dropdown header-browse">
+                <div class="btn home-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">All Categories
+                </div>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuCategoryLink">
+                    <?
+                    $categories = Category::getCategoriesWithCount();
+                    $all_categories = Category::getAllCategories();
+
+                    foreach ($all_categories as $category) {
+                        $count = (int)paramFromHash($category->category_slug, $categories);
+
+                        $row_style = ($browsing_category == $category->category_name) ? ' active-region' : '';
+                        ?>
+                        <li class="list-group-item">
+                            <a class="dropdown-item d-flex justify-content-between align-items-center <?= ($row_style) ?>"
+                               href="browse/by-category/<?= ($category->category_slug) ?>"><span class=""><?= ($category->category_name) ?></span>&nbsp;<span
+                                    class="badge badge-pill badge-fs"><?= ($count) ?></span></a>
                         </li>
                     <? } ?>
                 </ul>
