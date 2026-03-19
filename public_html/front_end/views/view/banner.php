@@ -20,6 +20,9 @@
                     </div>
 
                     <?php
+                    // Get categories directly from the model to ensure correct data
+                    $categories = Category::getCategoriesForDropdown();
+                    
                     // Display categories if available
                     if (!empty($listing_category_ids) && !empty($categories)) {
                         $selected_categories = array();

@@ -66,7 +66,16 @@
                                 <label for="category_ids">Category Tags</label>
                                 <div class="category-tags-container">
                                     <?php
-                                    foreach ($categories as $category_id => $category_name) {
+                                    // Get categories directly from the model to ensure correct data
+                                    $categories_list = Category::getCategoriesForDropdown();
+                                    
+                                    // Ensure we have valid data
+                                    if (!is_array($categories_list)) {
+                                        $categories_list = array();
+                                    }
+                                    
+                                    foreach ($categories_list as $category_id => $category_name) {
+                                        if (empty($category_name)) continue;
                                         $is_checked = !empty($listing_category_ids) && in_array($category_id, $listing_category_ids);
                                         ?>
                                         <div class="form-check form-check-inline category-tag-checkbox">
