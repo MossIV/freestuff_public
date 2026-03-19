@@ -72,6 +72,16 @@ $is_message_conversation = ($page_controller_method == 'message/conversation');
                     </div>
                 </div>
 
+                <div class="col-12 text-center py-3" id="footer-app-download">
+                    <h6>Get the Freestuff App</h6>
+                    <div>
+                        <a href="https://apps.apple.com/nz/app/freestuff-nz/id6445829592"><img
+                                src="img/apple-app-store.svg" style="height: 45px"></a>
+                        <a href="https://play.google.com/store/apps/details?id=nz.co.freestuff"><img
+                                src="img/google-play-store.svg" style="height: 45px"></a>
+                    </div>
+                </div>
+
                 <div class="col-12" id="footer-copyright">
                     <p>
                         &copy;FREESTUFF NEW ZEALAND LIMITED - <a href="<?= (APP_URL) ?>page/terms">Terms &amp;
