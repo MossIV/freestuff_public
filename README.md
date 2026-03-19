@@ -61,8 +61,8 @@ password: password
 1. ~~Category Tags for when creating a new listing. ~~
 2. ~~Tabs for categories in the nav.~~
 3. ~~Change dropdown list to a typing bar dropdown that narrows based on typed text.~~
-4. move the upload picture button into the box.
-5. restyle the upload picture box to look more modern.
+4. ~~move the upload picture button into the box.~~
+5. ~~restyle the upload picture box to look more modern.~~
 6. ~~move the freestuff app download down to the bottom above footer.~~
 7. Have a Show all page replace browse listings.\
 a. In the Show all page have a side bar filter setting and locations.\
